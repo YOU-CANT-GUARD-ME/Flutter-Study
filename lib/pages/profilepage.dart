@@ -1,86 +1,103 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:study4/pages/Flutterpage.dart';
 import 'package:study4/pages/homepage.dart';
 
-  final List<String> skills = [
-    "Flutter",
-    "Dart",
-    "JavaScript",
-    "Node.Js",
-    "SQL",
-  ];
-
-class Profilepage extends StatelessWidget {
+class Profilepage extends StatefulWidget {
   const Profilepage({super.key});
-  
+
+  @override
+  State<Profilepage> createState() => _ProfilepageState();
+}
+
+class _ProfilepageState extends State<Profilepage> {
+  final TextEditingController skillsController = TextEditingController();
+  List<String> skills = ["Flutter", "Dart", "JavaScript"];
+
+  @override
+  void dispose() {
+    skillsController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView.builder(
-        itemCount: skills.length,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: 30,
-              vertical: 10,
-            ),
-            child: SkillCard(skillName: skills[index]),
-          );
-        },
-      ),
-    );
-  }
-}
-
-
-class SkillCard extends StatelessWidget {
-  const SkillCard({
-    super.key,
-    required this.skillName,
-  });
-  
-  final String skillName;
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      color: Colors.blue,
-      elevation: 8,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Padding(
-        padding: EdgeInsets.all(20),
-        child: Row(
-          children: [
-            Icon(
-              Icons.computer,
-              size: 40,
-            ),
-            SizedBox(width: 20),
-            Flexible(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    skillName,
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              itemCount: skills.length,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 30,
+                    vertical: 10,
+                  ),
+                  child: Card(
+                    color: Colors.blue,
+                    elevation: 8,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(22),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.all(20),
+                      child: Row(
+                        children: [
+                          Icon(Icons.computer),
+                          SizedBox(width: 20),
+                          Expanded(
+                            child: Text(
+                              skills[index],
+                              style: TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              setState(() {
+                                skills.removeAt(index);
+                              });
+                            },
+                            child: Icon(CupertinoIcons.trash_fill),
+                          )
+                        ],
+                      ),
                     ),
                   ),
-                  Text(
-                    "Programming is about not only feeling the code you need to understand it",
-                    style: TextStyle(
-                      fontSize: 14,
-                    ),
-                  ),
-                ],
-              ),
+                );
+              },
             ),
-            SizedBox(width: 10),
-            Icon(Icons.arrow_forward_ios),
-          ],
-        ),
+          ),
+
+          Padding(
+            padding: EdgeInsetsGeometry.all(20),
+            child: Column(
+              children: [
+                TextField(
+                  controller: skillsController,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder()
+                  ),
+                ),
+
+                ElevatedButton(
+                  onPressed: () {
+                    if(skillsController.text.trim().isNotEmpty) {
+                      setState(() {
+                        skills.add(skillsController.text.trim());
+                      });
+                    }
+                    skillsController.clear();
+                  },
+                  child: Text("Add Language"),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
