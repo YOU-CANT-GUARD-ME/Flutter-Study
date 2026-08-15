@@ -13,6 +13,7 @@ class Profilepage extends StatefulWidget {
 class _ProfilepageState extends State<Profilepage> {
   final TextEditingController skillsController = TextEditingController();
   List<String> skills = ["Flutter", "Dart", "JavaScript"];
+  int? editingIndex;
 
   @override
   void dispose() {
@@ -55,14 +56,42 @@ class _ProfilepageState extends State<Profilepage> {
                               ),
                             ),
                           ),
-                          ElevatedButton(
-                            onPressed: () {
-                              setState(() {
-                                skills.removeAt(index);
-                              });
-                            },
-                            child: Icon(CupertinoIcons.trash_fill),
-                          )
+                          Column(
+                            children: [
+                              ElevatedButton(
+                                onPressed: () {
+                                  if(editingIndex == index) {
+                                    if(skillsController.text.trim().isNotEmpty) {
+                                      setState(() {
+                                        skills[index] = skillsController.text.trim();
+                                        editingIndex = null;
+                                        skillsController.clear();
+                                      });
+                                    }
+                                  } else {
+                                    setState(() {
+                                      editingIndex = index;
+                                      skillsController.text = skills[index];
+                                    });
+                                  }
+                                },
+                                child: Icon(
+                                  editingIndex == index
+                                    ? CupertinoIcons.check_mark
+                                    : CupertinoIcons.pen,
+                                ),
+                              ),
+                              SizedBox(height: 10),
+                              ElevatedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    skills.removeAt(index);
+                                  });
+                                },
+                                child: Icon(CupertinoIcons.trash_fill),
+                              ),
+                            ],
+                          ),
                         ],
                       ),
                     ),
