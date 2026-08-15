@@ -56,7 +56,7 @@ class SkillCard extends StatelessWidget {
               size: 40,
             ),
             SizedBox(width: 20),
-            Expanded(
+            Flexible(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -68,7 +68,7 @@ class SkillCard extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    "Programming",
+                    "Programming is about not only feeling the code you need to understand it",
                     style: TextStyle(
                       fontSize: 14,
                     ),
