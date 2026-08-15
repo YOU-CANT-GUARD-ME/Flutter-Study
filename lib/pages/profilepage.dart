@@ -42,9 +42,10 @@ class SkillCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.blue,
+    return Card(
+      color: Colors.blue,
+      elevation: 8,
+      shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
       ),
       child: Padding(
@@ -76,6 +77,7 @@ class SkillCard extends StatelessWidget {
                 ],
               ),
             ),
+            SizedBox(width: 10),
             Icon(Icons.arrow_forward_ios),
           ],
         ),
