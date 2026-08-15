@@ -56,24 +56,27 @@ class SkillCard extends StatelessWidget {
               size: 40,
             ),
             SizedBox(width: 20),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  skillName,
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    skillName,
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                Text(
-                  "Programming",
-                  style: TextStyle(
-                    fontSize: 14,
+                  Text(
+                    "Programming",
+                    style: TextStyle(
+                      fontSize: 14,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
+            Icon(Icons.arrow_forward_ios),
           ],
         ),
       ),
