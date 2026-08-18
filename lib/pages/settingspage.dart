@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:study4/models/todo.dart';
 
 class Settingspage extends StatefulWidget {
   const Settingspage({super.key});
@@ -10,15 +11,11 @@ class Settingspage extends StatefulWidget {
 
 class _SettingspageState extends State<Settingspage> {
   TextEditingController todoController = TextEditingController();
-  List<bool> isChecked = [
-    false,
-    false,
-    false,
-  ];
-  List<String> todo = [
-    "Wash The Dishes",
-    "Walk The Dog",
-    "Make The Bed",
+  int? editingIndex;
+  List<Todo> todos = [
+    Todo(title:  "Wash The Dishes"),
+    Todo(title: "Walk The Dog"),
+    Todo(title: "Make The Bed"),
   ];
 
   @override
@@ -75,8 +72,11 @@ class _SettingspageState extends State<Settingspage> {
               onPressed: () {
                 if (todoController.text.trim().isNotEmpty) {
                   setState(() {
-                    todo.add(todoController.text);
-                    isChecked.add(false);
+                    todos.add(
+                      Todo(
+                        title: todoController.text.trim(),
+                      ),
+                    );
                   });
                 }
                 todoController.clear();
@@ -90,7 +90,7 @@ class _SettingspageState extends State<Settingspage> {
 
             Expanded(
               child: ListView.builder(
-                itemCount: todo.length,
+                itemCount: todos.length,
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: EdgeInsetsGeometry.symmetric(
@@ -108,10 +108,10 @@ class _SettingspageState extends State<Settingspage> {
                         child: Row(
                           children: [
                             Checkbox(
-                              value: isChecked[index],
+                              value: todos[index].isCompleted,
                               onChanged: (value) {
                                 setState(() {
-                                  isChecked[index] = value!;
+                                  todos[index].isCompleted = value!;
                                 });
                               },
                               fillColor: WidgetStateProperty.resolveWith<Color>((states) {
@@ -124,27 +124,55 @@ class _SettingspageState extends State<Settingspage> {
 
                             Expanded(
                               child: Text(
-                                todo[index],
+                                todos[index].title,
                                 style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
-                                  color: isChecked[index]
+                                  color: todos[index].isCompleted
                                         ? Colors.grey
                                         : Colors.black,
-                                  decoration: isChecked[index]
+                                  decoration: todos[index].isCompleted
                                       ? TextDecoration.lineThrough
                                       : TextDecoration.none,
                                 ),
                               ),
                             ),
 
-                            IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  todo.removeAt(index);
-                                });
-                              },
-                              icon: Icon(CupertinoIcons.trash),
+                            Column(
+                              children: [
+                                IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      todos.removeAt(index);
+                                    });
+                                  },
+                                  icon: Icon(CupertinoIcons.trash),
+                                ),
+
+                                IconButton(
+                                  onPressed: () {
+                                    if (editingIndex == index) {
+                                      if (todoController.text.trim().isNotEmpty) {
+                                        setState(() {
+                                          todos[index].title = todoController.text.trim();
+                                          editingIndex = null;
+                                          todoController.clear();
+                                        });
+                                      }
+                                    } else {
+                                      setState(() {
+                                        editingIndex = index;
+                                        todoController.text = todos[index].title;
+                                      });
+                                    }
+                                  },
+                                  icon: Icon(
+                                    editingIndex == index
+                                        ? CupertinoIcons.check_mark
+                                        : CupertinoIcons.pen,
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
