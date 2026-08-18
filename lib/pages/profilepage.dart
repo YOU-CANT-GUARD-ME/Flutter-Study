@@ -85,7 +85,18 @@ class _ProfilepageState extends State<Profilepage> {
                               ElevatedButton(
                                 onPressed: () {
                                   setState(() {
-                                    skills.removeAt(index);
+                                    if (editingIndex == index) {
+                                      skills.removeAt(index);
+                                      editingIndex = null;
+                                    } else {
+                                      if (editingIndex != null && index < editingIndex!) {
+                                        editingIndex = editingIndex! - 1;
+                                      }
+
+                                      skills.removeAt(index);
+                                    }
+
+                                    skillsController.clear();
                                   });
                                 },
                                 child: Icon(CupertinoIcons.trash_fill),
@@ -123,6 +134,15 @@ class _ProfilepageState extends State<Profilepage> {
                   },
                   child: Text("Add Language"),
                 ),
+                
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      Navigator.pop(context);
+                    });
+                  },
+                  child: Text("Back"),
+                )
               ],
             ),
           ),
