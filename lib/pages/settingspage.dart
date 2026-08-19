@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:study4/models/todo.dart';
+
+
+
 
 class Settingspage extends StatefulWidget {
   const Settingspage({super.key});
@@ -11,11 +13,10 @@ class Settingspage extends StatefulWidget {
 
 class _SettingspageState extends State<Settingspage> {
   TextEditingController todoController = TextEditingController();
-  int? editingIndex;
-  List<Todo> todos = [
-    Todo(title:  "Wash The Dishes"),
-    Todo(title: "Walk The Dog"),
-    Todo(title: "Make The Bed"),
+  List<String> todos = [
+    "Walk The Dog",
+    "Wash The Dishes",
+    "Make My Bed",
   ];
 
   @override
@@ -32,15 +33,17 @@ class _SettingspageState extends State<Settingspage> {
         padding: EdgeInsetsGeometry.only(top: 60),
         child: Column(
           children: [
-            Text(
-              "TODO LIST",
-              style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.bold
+            Center(
+              child: Text(
+                "TODO LIST",
+                style: TextStyle(
+                  fontSize:  30,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
 
-            SizedBox(height: 50),
+            SizedBox(height: 30),
 
             Padding(
               padding: EdgeInsetsGeometry.symmetric(
@@ -50,41 +53,20 @@ class _SettingspageState extends State<Settingspage> {
               child: TextField(
                 controller: todoController,
                 decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.yellow,
-                      width: 2,
-                    )
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.yellow[800]!,
-                      width: 2,
-                    )
-                  )
+                  border: OutlineInputBorder(),
                 ),
               ),
             ),
 
-            SizedBox(height: 20),
-            
-            ElevatedButton(
+            TextButton(
               onPressed: () {
                 if (todoController.text.trim().isNotEmpty) {
                   setState(() {
-                    todos.add(
-                      Todo(
-                        title: todoController.text.trim(),
-                      ),
-                    );
+                    todos.add(todoController.text.trim());
+                    todoController.clear();
                   });
                 }
-                todoController.clear();
               },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.yellow,
-                foregroundColor: Colors.black,
-              ),
               child: Text("Add Task"),
             ),
 
@@ -98,84 +80,35 @@ class _SettingspageState extends State<Settingspage> {
                       vertical: 10,
                     ),
                     child: Card(
-                      color: Colors.yellow,
+                      color: Colors.yellow[400],
                       elevation: 8,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadiusGeometry.circular(20),
                       ),
-                      child: Padding(
-                        padding: EdgeInsetsGeometry.all(20),
-                        child: Row(
-                          children: [
-                            Checkbox(
-                              value: todos[index].isCompleted,
-                              onChanged: (value) {
-                                setState(() {
-                                  todos[index].isCompleted = value!;
-                                });
-                              },
-                              fillColor: WidgetStateProperty.resolveWith<Color>((states) {
-                                if (states.contains(WidgetState.selected)) {
-                                  return Colors.yellow[700]!;
-                                }
-                                return Colors.yellow;
-                              }),
-                            ),
-
-                            Expanded(
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Padding(
+                              padding: EdgeInsetsGeometry.all(20),
                               child: Text(
-                                todos[index].title,
+                                todos[index],
                                 style: TextStyle(
-                                  fontSize: 18,
+                                  fontSize: 20,
                                   fontWeight: FontWeight.bold,
-                                  color: todos[index].isCompleted
-                                        ? Colors.grey
-                                        : Colors.black,
-                                  decoration: todos[index].isCompleted
-                                      ? TextDecoration.lineThrough
-                                      : TextDecoration.none,
                                 ),
                               ),
                             ),
+                          ),
 
-                            Column(
-                              children: [
-                                IconButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      todos.removeAt(index);
-                                    });
-                                  },
-                                  icon: Icon(CupertinoIcons.trash),
-                                ),
-
-                                IconButton(
-                                  onPressed: () {
-                                    if (editingIndex == index) {
-                                      if (todoController.text.trim().isNotEmpty) {
-                                        setState(() {
-                                          todos[index].title = todoController.text.trim();
-                                          editingIndex = null;
-                                          todoController.clear();
-                                        });
-                                      }
-                                    } else {
-                                      setState(() {
-                                        editingIndex = index;
-                                        todoController.text = todos[index].title;
-                                      });
-                                    }
-                                  },
-                                  icon: Icon(
-                                    editingIndex == index
-                                        ? CupertinoIcons.check_mark
-                                        : CupertinoIcons.pen,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+                          IconButton(
+                            onPressed: () {
+                              setState(() {
+                                todos.removeAt(index);
+                              });
+                            },
+                            icon: Icon(CupertinoIcons.trash),
+                          )
+                        ],
                       ),
                     ),
                   );

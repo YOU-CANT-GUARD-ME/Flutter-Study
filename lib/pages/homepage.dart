@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:study4/pages/profilepage.dart';
-import 'package:study4/pages/settingspage.dart';
+import 'package:study4/util/todo_tile.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -12,40 +11,27 @@ class Homepage extends StatefulWidget {
 class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text("HOME"),
-
-              SizedBox(height: 20),
-
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Profilepage()),
-                  );
-                },
-                child: Text("PROFILE"),
-              ),
-
-              SizedBox(height: 5),
-
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Settingspage()),
-                  );
-                },
-                child: Text("SETTINGS"),
-              ),
-            ],
+    return Scaffold(
+      backgroundColor: Colors.yellow[200],
+      appBar: AppBar(
+        backgroundColor: Colors.yellow,
+        centerTitle: true,
+        title: Text(
+          "TO DO",
+          style: TextStyle(
+            fontSize: 26,
+            fontWeight: FontWeight.w600
           ),
         ),
+        elevation: 0,
+      ),
+      body: ListView(
+        children: [
+          ToDoTile(),
+          ToDoTile(),
+          ToDoTile(),
+          ToDoTile(),
+        ],
       ),
     );
   }
